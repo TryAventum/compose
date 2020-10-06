@@ -1,0 +1,54 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    expose:
+      - '27017'
+    volumes:
+      - mongo-db-data:/data/db
+    ports:
+      - '27017:27017'
+  redis:
+    image: 'redis:latest'
+  api:
+    expose:
+      - '3030'
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - DB_TYPE=mongodb
+      - DB_NAME=aventum
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - APP_URI=http://localhost:3030
+      - UPLOADS_PUBLIC_URL=http://localhost:3030
+    ports:
+      - '3030:3030'
+  dashboard:
+    build:
+      dockerfile: Dockerfile
+      context: ./dashboard
+      args:
+        - REACT_APP_BASE_URL=http://localhost:3030/
+    depends_on:
+      - api
+    volumes:
+      - /app/node_modules
+      - ./dashboard:/app
+    expose:
+      - '3333'
+    ports:
+      - '80:3333'
+
+volumes:
+  mongo-db-data:
