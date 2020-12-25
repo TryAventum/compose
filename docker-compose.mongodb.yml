@@ -1,7 +1,7 @@
 version: '3'
 services:
   mongo:
-    image: mongo
+    image: mongo:4.4.1
     restart: always
     expose:
       - '27017'
@@ -10,7 +10,7 @@ services:
     ports:
       - '27017:27017'
   redis:
-    image: 'redis:latest'
+    image: 'redis:6.0.9'
   api:
     expose:
       - '3030'
