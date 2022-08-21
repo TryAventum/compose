@@ -26,6 +26,7 @@ services:
       - /app/node_modules
       - ./server:/app
     environment:
+      - PORT=3030
       - DB_TYPE=pg
       - DB_NAME=postgres
       - DB_USER=postgres

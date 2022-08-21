@@ -24,6 +24,7 @@ services:
       - /app/node_modules
       - ./server:/app
     environment:
+      - PORT=3030
       - DB_TYPE=mongodb
       - DB_NAME=aventum
       - DB_HOST=mongo
